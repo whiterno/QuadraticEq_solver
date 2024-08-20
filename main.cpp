@@ -12,7 +12,7 @@ double discriminant(double, double, double);
 int LinearEquationSolver(double, double, double*);
 int printQdrEqRoots(int, double, double);
 int get_double(double*);
-void dumpBuff();
+void clearBuff();
 int get_coefs(double* ,double*, double*);
 
 
@@ -64,6 +64,8 @@ int QuadraticEquationSolver(double a, double b, double c, double* x1, double* x2
 }
 
 int LinearEquationSolver(double a, double b, double* x){
+    assert(x != NULL);
+
     if (isZero(a)){
         return (isZero(b))? ES_INF_ROOTS : 0;
     }
@@ -108,28 +110,30 @@ int printQdrEqRoots(int QES_root_count, double x1, double x2){
 }
 
 bool strIsSpace(){
-    char c;
+    int c;
     bool flag = 1;
 
-    while ((c = getchar()) != '\n'){
+    while ((c = getchar()) != '\n' or c != EOF){
         if (!isspace(c)) flag = 0;
     }
     return flag;
 }
 
-void dumpBuff(){
-    char c;
+void clearBuff(){
+    int c;
 
-    while ((c = getchar()) != '\n'){
+    while ((c = getchar()) != '\n' || c != EOF){
         continue;
     }
 }
 
 int get_double(double* num){
+    assert(num != NULL);
+
     while (1){
         while (scanf("%lg", num) != 1){
             printf("This is not a number! Try 2.2 or 6\n");
-            dumpBuff();
+            clearBuff();
         }
         if (!strIsSpace()){
             printf("This is not a number! Try 2.2 or 6\n");
@@ -141,6 +145,10 @@ int get_double(double* num){
 }
 
 int get_coefs(double* a, double* b, double* c){
+    assert(a != NULL);
+    assert(b != NULL);
+    assert(c != NULL);
+
     printf("Enter a:\n");
     get_double(a);
     printf("Enter b:\n");
