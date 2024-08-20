@@ -6,55 +6,62 @@
 const int ES_INF_ROOTS = -1;
 const double EPS = 0.0001;
 
-int QuadraticEquationSolver(double, double, double, double*, double*);
-bool isZero(double);
-double discriminant(double, double, double);
-int LinearEquationSolver(double, double, double*);
-int printQdrEqRoots(int, double, double);
-int get_double(double*);
+int QuadraticEquationSolver(double coef_a, double coef_b, double coef_c,
+                            double* root1, double* root2);
+bool isZero(double num);
+double discriminant(double coef_a, double coef_b, double coef_c);
+int LinearEquationSolver(double coef_a, double coef_b, double* root);
+int printQdrEqRoots(struct QuadraticEquation* pnt_eq);
+int get_double(double* num);
 void clearBuff();
-int get_coefs(double* ,double*, double*);
+int get_coefs(double* coef_a, double* coef_b, double* coef_c);
 
+struct QuadraticEquation{
+    double root1, root2;
+    int QES_root_count;
+};
 
 int main(void){
     printf("Quadratic Equation solver\n\n");
 
-    double a = 0, b = 0, c = 0;
-    get_coefs(&a, &b, &c);
+    double coef_a = 0, coef_b = 0, coef_c = 0;
+    get_coefs(&coef_a, &coef_b, &coef_c);
 
-    double x1 = 0, x2 = 0;
-    int QES_root_count = QuadraticEquationSolver(a, b, c, &x1, &x2);
+    struct QuadraticEquation equation;
+    equation.QES_root_count = QuadraticEquationSolver(coef_a, coef_b, coef_c,
+                                                      &equation.root1, &equation.root2);
 
-    printQdrEqRoots(QES_root_count, x1, x2);
+    struct QuadraticEquation* pnt_eq = &equation;
+    printQdrEqRoots(pnt_eq);
 
     return 0;
 }
 
-int QuadraticEquationSolver(double a, double b, double c, double* x1, double* x2){
-    assert(isfinite(a));
-    assert(isfinite(b));
-    assert(isfinite(c));
+int QuadraticEquationSolver(double coef_a, double coef_b, double coef_c, double* root1, double* root2){
+    assert(isfinite(coef_a));
+    assert(isfinite(coef_b));
+    assert(isfinite(coef_c));
 
-    assert(x1 != NULL);
-    assert(x2 != NULL);
-    assert(x1 != x2);
+    assert(root1 != NULL);
+    assert(root2 != NULL);
+    assert(root1 != root2);
 
-    if (isZero(a)){
-        int LES_root_count = LinearEquationSolver(b, c, x1);
-        *x2 = *x1;
+    if (isZero(coef_a)){
+        int LES_root_count = LinearEquationSolver(coef_b, coef_c, root1);
+        *root2 = *root1;
         return LES_root_count;
     }
     else{   // if (!isZero(a))
-        double d = discriminant(a, b, c);
+        double d = discriminant(coef_a, coef_b, coef_c);
         if (isZero(d)){
-            *x1 = -b / (2 * a);
-            *x2 = -b / (2 * a);
+            *root1 = -coef_b / (2 * coef_a);
+            *root2 = -coef_b / (2 * coef_a);
             return 1;
         }
         else if (d > 0){
             double sqrt_d = sqrt(d);
-            *x1 = (-b + sqrt_d) / (2 * a);
-            *x2 = (-b - sqrt_d) / (2 * a);
+            *root1 = (-coef_b + sqrt_d) / (2 * coef_a);
+            *root2 = (-coef_b - sqrt_d) / (2 * coef_a);
             return 2;
         }
         else{   // if (d < 0)
@@ -63,14 +70,14 @@ int QuadraticEquationSolver(double a, double b, double c, double* x1, double* x2
     }
 }
 
-int LinearEquationSolver(double a, double b, double* x){
-    assert(x != NULL);
+int LinearEquationSolver(double coef_a, double coef_b, double* root){
+    assert(root != NULL);
 
-    if (isZero(a)){
-        return (isZero(b))? ES_INF_ROOTS : 0;
+    if (isZero(coef_a)){
+        return (isZero(coef_b))? ES_INF_ROOTS : 0;
     }
     else{   // if (!isZero(a))
-        *x = -b / a;
+        *root = -coef_b / coef_a;
         return 1;
     }
 }
@@ -79,30 +86,30 @@ bool isZero(double num){
     return fabs(num) < EPS;
 }
 
-double discriminant(double a, double b, double c){
-    return b * b - 4 * a * c;
+double discriminant(double coef_a, double coef_b, double coef_c){
+    return coef_b * coef_b - 4 * coef_a * coef_c;
 }
 
-int printQdrEqRoots(int QES_root_count, double x1, double x2){
-    switch(QES_root_count){
+int printQdrEqRoots(struct QuadraticEquation* pnt_eq){
+    switch(pnt_eq->QES_root_count){
         case 0:{
             printf("Equation has no roots\n");
             break;
         }
         case 1:{
-            printf("x = %lg\n", x1);
+            printf("Equation has 1 root: x = %lg\n", pnt_eq->root1);
             break;
         }
         case 2:{
-            printf("x1 = %lg, x2 = %lg\n", x1, x2);
+            printf("Equation has 2 roots: x1 = %lg, x2 = %lg\n", pnt_eq->root1, pnt_eq->root2);
             break;
         }
         case ES_INF_ROOTS:{
-            printf("Any number\n");
+            printf("The root of the equation is any number\n");
             break;
         }
         default:{
-            printf("Error: nRoots = %d\n", QES_root_count);
+            printf("Error: nRoots = %d\n", pnt_eq->QES_root_count);
             return 1;
         }
     }
@@ -113,7 +120,7 @@ bool strIsSpace(){
     int c;
     bool flag = 1;
 
-    while ((c = getchar()) != '\n' or c != EOF){
+    while ((c = getchar()) != '\n' && c != EOF){
         if (!isspace(c)) flag = 0;
     }
     return flag;
@@ -122,7 +129,7 @@ bool strIsSpace(){
 void clearBuff(){
     int c;
 
-    while ((c = getchar()) != '\n' || c != EOF){
+    while ((c = getchar()) != '\n' && c != EOF){
         continue;
     }
 }
@@ -144,16 +151,16 @@ int get_double(double* num){
     }
 }
 
-int get_coefs(double* a, double* b, double* c){
-    assert(a != NULL);
-    assert(b != NULL);
-    assert(c != NULL);
+int get_coefs(double* coef_a, double* coef_b, double* coef_c){
+    assert(coef_a != NULL);
+    assert(coef_b != NULL);
+    assert(coef_c != NULL);
 
     printf("Enter a:\n");
-    get_double(a);
+    get_double(coef_a);
     printf("Enter b:\n");
-    get_double(b);
+    get_double(coef_b);
     printf("Enter c:\n");
-    get_double(c);
+    get_double(coef_c);
     return 0;
 }
