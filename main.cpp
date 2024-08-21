@@ -2,6 +2,9 @@
 #include <math.h>
 #include <assert.h>
 #include <ctype.h>
+#include <string.h>
+#include "tests.h"
+
 
 void QuadraticEquationSolver(const struct QuadraticEquationCoef* pnt_QEC, struct QuadraticEquationSol* pnt_QES);
 bool isZero(const double num);
@@ -15,55 +18,44 @@ int runTest(const int serial_num);
 int checkTest(const int serial_num, const struct QuadraticEquationSol* roots);
 void printTestResult(const int result, const int serial_num, const struct QuadraticEquationSol* roots);
 void runAllTests();
+void printSolutionError(const int serial_num, const struct QuadraticEquationSol* roots);
+int checkArgs(const int argc, char* argv[]);
+void printArgs(const int argc, char* argv[]);
 
-
-struct QuadraticEquationSol{
-    int QES_root_count;
-    double root1, root2;
-};
-
-struct QuadraticEquationCoef{
-    double coef_a, coef_b, coef_c;
-};
-
-struct Test{
-    struct QuadraticEquationCoef coefs;
-    struct QuadraticEquationSol sol;
-};
-
-const int ES_INF_ROOTS = -1;
 const double EPS = 0.0001;
-const int TEST_AMOUNT = 11;
-const struct Test TESTS[TEST_AMOUNT] = {
-        {.coefs = {.coef_a = 0, .coef_b = 0, .coef_c = 0}, .sol = {.QES_root_count = ES_INF_ROOTS, .root1 = 0, .root2 = 0}},
-        {.coefs = {.coef_a = 0, .coef_b = 0, .coef_c = 1}, .sol = {.QES_root_count = 0, .root1 = 0, .root2 = 0}},
-        {.coefs = {.coef_a = 0, .coef_b = 1, .coef_c = 0}, .sol = {.QES_root_count = 1, .root1 = 0, .root2 = 0}},
-        {.coefs = {.coef_a = 0, .coef_b = 1, .coef_c = 1}, .sol = {.QES_root_count = 1, .root1 = -1, .root2 = -1}},
-        {.coefs = {.coef_a = 0, .coef_b = 0, .coef_c = 1.2}, .sol = {.QES_root_count = 0, .root1 = 0, .root2 = 0}},
-        {.coefs = {.coef_a = 0, .coef_b = 1.2, .coef_c = 0}, .sol = {.QES_root_count = 1, .root1 = 0, .root2 = 0}},
-        {.coefs = {.coef_a = 0, .coef_b = 1.2, .coef_c = 4.8}, .sol = {.QES_root_count = 1, .root1 = -4, .root2 = -4}},
-        {.coefs = {.coef_a = 4, .coef_b = -4, .coef_c = 1}, .sol = {.QES_root_count = 1, .root1 = 0.5, .root2 = 0.5}},
-        {.coefs = {.coef_a = 1, .coef_b = -2, .coef_c = -15}, .sol = {.QES_root_count = 2, .root1 = -3, .root2 = 5}},
-        {.coefs = {.coef_a = 1, .coef_b = 2, .coef_c = 10}, .sol = {.QES_root_count = 0, .root1 = 0, .root2 = 0}},
-        {.coefs = {.coef_a = 1, .coef_b = 7, .coef_c = 10}, .sol = {.QES_root_count = 2, .root1 = -2, .root2 = -5}}
-    };
-enum Test_results{
-    SOLUTION_SUCCESS,
-    SOLUTION_ERROR
+enum Terminal_input_results{
+    HELP,
+    MANUAL_SCAN,
+    UNIT_TESTING,
+    TERMINAL_ERROR
 };
 
-int main(void){
-    printf("Quadratic Equation solver\n\n");
+int main(int argc, char* argv[]){
+    int check_res = checkArgs(argc, argv);
 
-//     struct QuadraticEquationCoef coefs;
-//     get_coefs(&coefs);
-//
-//     struct QuadraticEquationSol equation;
-//     QuadraticEquationSolver(&coefs, &equation);
-//     printQdrEqRoots(&equation);
+    switch(check_res){
+        case HELP:{
+            break;
+        }
+        case MANUAL_SCAN:{
+            printf("Quadratic Equation solver\n\n");
+            struct QuadraticEquationCoef coefs;
+            get_coefs(&coefs);
 
-    runAllTests();
-
+            struct QuadraticEquationSol equation;
+            QuadraticEquationSolver(&coefs, &equation);
+            printQdrEqRoots(&equation);
+            break;
+        }
+        case UNIT_TESTING:{
+            runAllTests();
+            break;
+        }
+        case TERMINAL_ERROR:{
+            printf("Commamd not found: ");
+            printArgs(argc, argv);
+        }
+    }
     return 0;
 }
 
@@ -210,10 +202,10 @@ int checkTest(const int serial_num, const struct QuadraticEquationSol* roots){
         if (roots->root1 == TESTS[serial_num].sol.root1 && roots->root2 == TESTS[serial_num].sol.root2){
             return SOLUTION_SUCCESS;
         }
-        else if(roots->root1 == TESTS[serial_num].sol.root2 && roots->root2 == TESTS[serial_num].sol.root1){
+        if(roots->root1 == TESTS[serial_num].sol.root2 && roots->root2 == TESTS[serial_num].sol.root1){
             return SOLUTION_SUCCESS;
         }
-        }
+    }
     return SOLUTION_ERROR;
 }
 
@@ -227,13 +219,7 @@ void printTestResult(const int result, const int serial_num, const struct Quadra
             break;
         }
         case SOLUTION_ERROR: {
-            printf("Test %d: ERROR\n", serial_num + 1);
-            printf("Test coefficients: a = %lg, b = %lg, c = %lg\n",
-            TESTS[serial_num].coefs.coef_a, TESTS[serial_num].coefs.coef_b, TESTS[serial_num].coefs.coef_c);
-            printf("Got result: nRoot = %d, root1 = %lg, root2 = %lg\n",
-            roots->QES_root_count, roots->root1, roots->root2);
-            printf("Expected result: nRoot = %d, root1 = %lg, root2 = %lg\n",
-            TESTS[serial_num].sol.QES_root_count, TESTS[serial_num].sol.root1, TESTS[serial_num].sol.root2);
+            printSolutionError(serial_num, roots);
             break;
         }
         default:{
@@ -246,4 +232,42 @@ void runAllTests(){
     for(int test_count = 0; test_count < TEST_AMOUNT; test_count++){
         runTest(test_count);
     }
+}
+
+void printSolutionError(const int serial_num, const struct QuadraticEquationSol* roots){
+    printf("Test %d: ERROR\n", serial_num + 1);
+    printf("Test coefficients: a = %lg, b = %lg, c = %lg\n",
+    TESTS[serial_num].coefs.coef_a, TESTS[serial_num].coefs.coef_b, TESTS[serial_num].coefs.coef_c);
+    printf("Got result: nRoot = %d, root1 = %lg, root2 = %lg\n",
+    roots->QES_root_count, roots->root1, roots->root2);
+    printf("Expected result: nRoot = %d, root1 = %lg, root2 = %lg\n",
+    TESTS[serial_num].sol.QES_root_count, TESTS[serial_num].sol.root1, TESTS[serial_num].sol.root2);
+}
+
+int checkArgs(const int argc, char* argv[]){
+    if (argc == 1){
+        return MANUAL_SCAN;
+    }
+    if (argc == 2 && strcmp(argv[1], "--help") == 0){
+        printf("For manual scanning: ./a.out -m 0\n");
+        printf("For Unit Testing: ./a.out -m 1\n");
+        return HELP;
+    }
+    if (argc == 3 && strcmp(argv[1], "-m") == 0){
+        if (strcmp(argv[2], "0") == 0){
+            return MANUAL_SCAN;
+        }
+        if (strcmp(argv[2], "1") == 0){
+            return UNIT_TESTING;
+        }
+        return TERMINAL_ERROR;
+    }
+    return TERMINAL_ERROR;
+}
+
+void printArgs(const int argc, char* argv[]){
+    for (int arg = 0; arg < argc; arg++){
+        printf("%s ", argv[arg]);
+    }
+    printf("\n");
 }
