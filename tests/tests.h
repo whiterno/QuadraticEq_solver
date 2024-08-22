@@ -1,14 +1,15 @@
-#include "QES_structs.h"
+#include "../QES_structs.h"
+#include "../consts.h"
 
-const int ES_INF_ROOTS = -1;
-const int TEST_AMOUNT = 11;
+#ifndef _TESTS
+#define _TESTS
 
 struct Test{
     struct QuadraticEquationCoef coefs;
     struct QuadraticEquationSol sol;
 };
 
-const struct Test TESTS[TEST_AMOUNT] = {
+const struct Test TESTS[] = {
 
         {.coefs = {.coef_a = 0,
                    .coef_b = 0,
@@ -85,10 +86,23 @@ const struct Test TESTS[TEST_AMOUNT] = {
                    .coef_c = 10},
          .sol = {.QES_root_count = 2,
                  .root1 = -2,
-                 .root2 = -5}}
+                 .root2 = -5}},
+
+        {.coefs = {.coef_a = 1,
+                   .coef_b = 7,
+                   .coef_c = 10},
+         .sol = {.QES_root_count = 2,
+                 .root1 = -5,
+                 .root2 = -2}}
 
     };
 enum Test_results{
     SOLUTION_SUCCESS,
     SOLUTION_ERROR
 };
+
+const int TEST_AMOUNT =  (sizeof TESTS) / (sizeof TESTS[0]);
+
+void runAllTests(int col);
+
+#endif
