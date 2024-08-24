@@ -5,12 +5,13 @@
 #define _TESTS
 
 struct Test{
+    int serial_num;
     struct QuadraticEquationCoef coefs;
     struct QuadraticEquationSol sol;
 };
 
-Test* freadTests();
-void runAllTests();
+Test* freadTests(int* test_amount);
+void runAllTests(Test TESTS[], const int test_amount);
 void Testspr(Test* source, int size);
 
 

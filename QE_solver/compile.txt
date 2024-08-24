@@ -1,0 +1,1 @@
+g++ main.cpp ./in_out/in_out.cpp ./QES_funcs/QES_funcs.cpp ./terminal/terminal.cpp ./tests/tests.cpp ./useful/useful.cpp ./cprint/cprint.cpp

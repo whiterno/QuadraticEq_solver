@@ -1,9 +1,8 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "QES.h"
-extern Test* TESTS;
 
 int main(int argc, char* argv[]){
-    printf("run main\n");
     Flag fl = {.flag = 1, .flag_cnt = 0};
     Color col= {.color = DEFAULT, .color_cnt = 0};
     int check_res = checkArgs(argc, argv, &fl, &col);
@@ -31,8 +30,10 @@ int main(int argc, char* argv[]){
             break;
         }
         case UNIT_TESTING:{
-            runAllTests();
-            free();
+            int test_amount = 0;
+            Test* Tests = freadTests(&test_amount);
+            runAllTests(Tests, test_amount);
+            free(Tests);
             break;
         }
         case TERMINAL_ERROR:{
