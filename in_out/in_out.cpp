@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <assert.h>
+#include <stdarg.h>
 #include "../useful/useful.h"
 #include "in_out.h"
 #include "../consts.h"
@@ -86,7 +87,7 @@ int get_coefs(struct QuadraticEquationCoef* coefs){
     return 0;
 }
 
-void printColor(int col){
+void printColor(const int col){
     if (col == BLANK){
         printf("\033[0m");
     }

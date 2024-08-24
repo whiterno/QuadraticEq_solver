@@ -57,10 +57,7 @@ static int get_color(char* arg){
         return BLANK;
     }
     if (strcmp(arg, "1") == 0){
-        return RED;
-    }
-    if (strcmp(arg, "2") == 0){
-        return GREEN;
+        return DEFAULT;
     }
     return COLOR_ERROR;
 }

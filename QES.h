@@ -5,3 +5,4 @@
 #include "tests/tests.h"
 #include "useful/useful.h"
 #include "consts.h"
+#include "cprint/cprint.h"
