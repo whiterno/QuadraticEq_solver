@@ -1,3 +1,6 @@
+#ifndef _QES
+#define _QES
+
 #include "in_out/in_out.h"
 #include "QES_funcs/QES_funcs.h"
 #include "QES_structs.h"
@@ -6,3 +9,7 @@
 #include "useful/useful.h"
 #include "consts.h"
 #include "cprint/cprint.h"
+
+void runProgramm(int check_res, int argc, char* argv[]);
+
+#endif

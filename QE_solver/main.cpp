@@ -8,6 +8,11 @@ int main(int argc, char* argv[]){
     int check_res = checkArgs(argc, argv, &fl, &col);
     set_color_flag(col.color);
 
+    runProgramm(check_res, argc, argv);
+    return 0;
+}
+
+void runProgramm(int check_res, int argc, char* argv[]){
     switch(check_res){
         case HELP:{
             printf("For manual scanning: ./a.out -m 0\n");
@@ -41,5 +46,4 @@ int main(int argc, char* argv[]){
             printArgs(argc, argv);
         }
     }
-    return 0;
 }
