@@ -2,3 +2,4 @@ obj/
 /a.out
 .vscode/
 *.dSYM
+/.DS_Store
