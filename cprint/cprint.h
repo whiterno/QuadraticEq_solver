@@ -14,7 +14,7 @@ void cprint(const int col, const char* fmt, ...);
 //!
 //! @brief enables or disables cprint
 //!
-//! @param const int col    ability flag
+//! @param [in]const int col    ability flag
 //!
 //! @return void
 //!

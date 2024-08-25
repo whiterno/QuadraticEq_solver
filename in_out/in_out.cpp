@@ -11,7 +11,7 @@
 //!
 //! @brief scans double number
 //!
-//! @param double* num     the number that need to be read
+//! @param [out] double* num     the number that need to be read
 //!
 //! @return int   0
 //!
