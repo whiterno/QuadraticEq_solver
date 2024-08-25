@@ -8,8 +8,31 @@
 #include "../QES_structs.h"
 #include "../terminal/terminal.h"
 
+//!
+//! @brief scans double number
+//!
+//! @param double* num     the number that need to be read
+//!
+//! @return int   0
+//!
 static int get_double(double* num);
+
+//!
+//! @brief clears buffer from user's input
+//!
+//! @param void
+//!
+//! @return void
+//!
 static void clearBuff();
+
+//!
+//! @brief checks whether the string is made of space signs
+//!
+//! @param void
+//!
+//! @return void
+//!
 static bool strIsSpace();
 
 int printQdrEqRoots(const struct QuadraticEquationSol* sol){

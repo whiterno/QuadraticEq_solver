@@ -5,7 +5,22 @@
 #include "terminal.h"
 #include "../consts.h"
 
+//!
+//! @brief gets color flag from terminal input
+//!
+//! @param [in] char* arg   string color from terminal
+//!
+//! @return int     color in int
+//!
 static int get_color(char* arg);
+
+//!
+//! @brief gets the second argument of -m flag
+//!
+//! @param [in] char* arg   string second argument
+//!
+//! @return int     second argument in int
+//!
 static int get_m(char* arg);
 
 int checkArgs(const int argc, char* argv[], Flag* fl, Color* col){

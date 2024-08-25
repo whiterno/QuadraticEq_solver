@@ -10,8 +10,33 @@ struct Test{
     struct QuadraticEquationSol sol;
 };
 
+//!
+//! @brief reads tests from file tests
+//!
+//! @param [out] int* test_amount   the number of tests read from the file
+//!
+//! @return Test*   pointer to the array of tests
+//!
 Test* freadTests(int* test_amount);
+
+//!
+//! @brief run all tests
+//!
+//! @param [in] Test TESTS[]     array of all tests
+//! @param [in] const int test_amount    amount of tests in TESTS[]
+//!
+//! @return void
+//!
 void runAllTests(Test TESTS[], const int test_amount);
+
+//!
+//! @brief prints the array of tests
+//!
+//! @param [in] Test* source     the array of tests
+//! @param [in] int size     amount of tests in array
+//!
+//! @return void
+//!
 void Testspr(Test* source, int size);
 
 

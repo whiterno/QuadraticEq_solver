@@ -7,7 +7,26 @@
 #include "../consts.h"
 #include "../QES_structs.h"
 
+//!
+//! @brief  finds discriminant
+//!
+//! @param [in] const double coef_a     first coef
+//! @param [in] const double coef_b     second coef
+//! @param [in] const double coef_c     third coef
+//!
+//! @return double  discriminant
+//!
 static double discriminant(const double coef_a, const double coef_b, const double coef_c);
+
+//!
+//! @brief solves linear equation
+//!
+//! @param [in] const double coef_a  first coef
+//! @param [in] const double coef_b  second coef
+//! @param [out] double* root   root of the equation
+//!
+//! @return int     amount of roots
+//!
 static int LinearEquationSolver(const double coef_a, const double coef_b, double* root);
 
 void QuadraticEquationSolver(const struct QuadraticEquationCoef* coefs, struct QuadraticEquationSol* sol){

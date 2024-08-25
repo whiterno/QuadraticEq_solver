@@ -4,6 +4,7 @@
 #include "../in_out/in_out.h"
 #include "cprint.h"
 
+//! @brief enables or disables colorful output
 static int color_flag = DEFAULT;
 
 void cprint(const int col, const char* fmt, ...){

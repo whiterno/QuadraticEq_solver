@@ -8,9 +8,45 @@
 #include "../terminal/terminal.h"
 #include "../in_out/in_out.h"
 
+//!
+//! @brief runs one test
+//!
+//! @param [in] Test test   test itself
+//! @param [in] const int TEST_AMOUNT   amount of tests in the source array
+//!
+//! @return int     the result of test check
+//!
 static int runTest(const Test test, const int TEST_AMOUNT);
+
+//!
+//! @brief  compares QuadraticEquationSolver() output with answer
+//!
+//! @param [in] const Test test     test with answer
+//! @param [in] const struct QuadraticEquationSol* roots    roots got by QuadraticEquationSolver()
+//!
+//! @return int     SOLUTION_SUCCESS or SOLUTION_ERROR
+//!
 static int checkTest(const Test test, const struct QuadraticEquationSol* roots);
+
+//!
+//! @brief prints test result (success or error)
+//!
+//! @param [in] const int result    the ruselt of test check
+//! @param [in] const Test test     test with test answers
+//! @param [in] const struct QuadraticEquationSol* roots    roots got by QuadraticEquationSolver()
+//!
+//! @return void
+//!
 static void printTestResult(const int result, const Test test, const struct QuadraticEquationSol* roots);
+
+//!
+//! @brief  prints message if error found
+//!
+//! @param [in] const Test test     test with answer and coefs
+//! @param [in] const struct QuadraticEquationSol* roots    roots got by QuadraticEquationSolver()
+//!
+//! @return void
+//!
 static void printSolutionError(const Test test, const struct QuadraticEquationSol* roots);
 
 static int runTest(const Test test, const int TEST_AMOUNT){
@@ -18,7 +54,7 @@ static int runTest(const Test test, const int TEST_AMOUNT){
 
     struct QuadraticEquationSol roots = {0, 0, 0};
 
-    QuadraticEquationSolver(&test.coefs, &roots);
+    c(&test.coefs, &roots);
 
     int result = checkTest(test, &roots);
     printTestResult(result, test, &roots);

@@ -2,10 +2,13 @@
 #include <stdlib.h>
 #include "QES.h"
 
+//!
 //! @brief main function
 //!
-//! @param argc int
-//! @param argv char**
+//! @param [in] int argc    amount of terminal input
+//! @param [in] char** argv     terminal input
+//!
+//! @return int     0
 //!
 int main(int argc, char* argv[]){
     Flag fl = {.flag = 1, .flag_cnt = 0};

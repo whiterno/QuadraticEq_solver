@@ -10,6 +10,15 @@
 #include "consts.h"
 #include "cprint/cprint.h"
 
+//!
+//! @brief run function
+//!
+//! @param [in] int check_res   checks the result of terminal input
+//! @param [in] int argc    amount of terminal input
+//! @param [in] char** argv     terminal input
+//!
+//! @return void
+//!
 void runProgramm(int check_res, int argc, char* argv[]);
 
 #endif

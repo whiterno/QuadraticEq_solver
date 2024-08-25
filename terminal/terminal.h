@@ -24,7 +24,26 @@ enum Colors{
     GREEN
 };
 
+//!
+//! @brief reads and checks terminal input
+//!
+//! @param [in] const int argc   amount of terminal input
+//! @param [in] char* argv[]     terminal input
+//! @param [out] Flag* fl   flag from terminal input
+//! @param [out] Color* col     color flag from terminal input
+//!
+//! @return int     terminal input check result
+//!
 int checkArgs(const int argc, char* argv[], Flag* fl, Color* col);
+
+//!
+//! @brief prints terminal input
+//!
+//! @param [in] const int argc  amount of terminal input
+//! @param [in] char* argv[]    terminal input
+//!
+//! @return void
+//!
 void printArgs(const int argc, char* argv[]);
 
 #endif
