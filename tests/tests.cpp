@@ -7,6 +7,7 @@
 #include "../consts.h"
 #include "../terminal/terminal.h"
 #include "../in_out/in_out.h"
+#include "../cprint/cprint.h"
 
 //!
 //! @brief runs one test
@@ -54,7 +55,7 @@ static int runTest(const Test test, const int TEST_AMOUNT){
 
     struct QuadraticEquationSol roots = {0, 0, 0};
 
-    c(&test.coefs, &roots);
+    QuadraticEquationSolver(&test.coefs, &roots);
 
     int result = checkTest(test, &roots);
     printTestResult(result, test, &roots);
