@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include "QES.h"
 
+//! @brief main function
+//!
+//! @param argc int
+//! @param argv char**
+//!
 int main(int argc, char* argv[]){
     Flag fl = {.flag = 1, .flag_cnt = 0};
     Color col= {.color = DEFAULT, .color_cnt = 0};
