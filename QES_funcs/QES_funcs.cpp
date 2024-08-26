@@ -8,24 +8,24 @@
 #include "../QES_structs.h"
 
 //!
-//! @brief  finds discriminant
+//! @brief  Находит дискриминант
 //!
-//! @param [in] const double coef_a     first coef
-//! @param [in] const double coef_b     second coef
-//! @param [in] const double coef_c     third coef
+//! @param [in] coef_a     Первый коэффициент
+//! @param [in] coef_b     Второй коэффициент
+//! @param [in] coef_c     Третий коэффициент
 //!
-//! @return double  discriminant
+//! @return Дискриминант квадратного уравнения
 //!
 static double discriminant(const double coef_a, const double coef_b, const double coef_c);
 
 //!
-//! @brief solves linear equation
+//! @brief Решает линейное уравнение
 //!
-//! @param [in] const double coef_a  first coef
-//! @param [in] const double coef_b  second coef
-//! @param [out] double* root   root of the equation
+//! @param [in] coef_a  Первый коэффициент
+//! @param [in] coef_b  Второй коэффициент
+//! @param [out] root   Корень линейного уравнения
 //!
-//! @return int     amount of roots
+//! @return Количество корней линейного уравнения
 //!
 static int LinearEquationSolver(const double coef_a, const double coef_b, double* root);
 

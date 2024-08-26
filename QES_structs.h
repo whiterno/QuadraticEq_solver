@@ -1,13 +1,18 @@
 #ifndef _QES_STRUCTS
 #define _QES_STRUCTS
 
+//! @brief Структура, которая содержит в себе корни квадратного уравнения и их количество
 struct QuadraticEquationSol{
-    int QES_root_count;
-    double root1, root2;
+    int QES_root_count;     ///< Количество корней квадратного уравнения
+    double root1;           ///< Первый корень квадратного уравнения
+    double root2;           ///< Второй корень квадратного уравнения
 };
 
+//! @brief Структура, которая содержит коэффициенты квадратного уравнения
 struct QuadraticEquationCoef{
-    double coef_a, coef_b, coef_c;
+    double coef_a;  ///< Первый коэффициент квадратного уравнения
+    double coef_b;  ///< Второй коэффициент квадратного уравнения
+    double coef_c;  ///< Третий коэффициент квадратного уравнения
 };
 
 #endif

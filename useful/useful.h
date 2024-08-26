@@ -4,21 +4,21 @@
 const double EPS = 0.000001;
 
 //!
-//! @brief compares double number with 0
+//! @brief Сравнивает число типа double с 0
 //!
-//! @param [in] num the double number
+//! @param [in] num     Число типа double
 //!
-//! @return 1 if the number is equal to 0, 0 if not
+//! @return 1, если число равно 0, иначе 0
 //!
 bool isZero(const double num);
 
 //!
-//! @brief compares two double numbers
+//! @brief Сравнивает два числа типа double
 //!
-//! @param [in] num1 the double number
-//! @param [in] num2 the double number
+//! @param [in] num1    Первое число типа double
+//! @param [in] num2    Второе число типа double
 //!
-//! @return 1 if numbers are equal, 0 if not
+//! @return 1, если числа равны, иначе 0
 //!
 bool fequal(const double num1, const double num2);
 

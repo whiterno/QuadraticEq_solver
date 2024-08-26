@@ -2,10 +2,10 @@
 #define _QES_FUNCS
 
 //!
-//! @brief solves quadratic equation
+//! @brief Решает квадратное уравнение
 //!
-//! @param [in] const struct QuadraticEquationCoef* coefs   contains 3 coefs for equation
-//! @param [out] struct QuadraticEquationSol* sol   contains quadratic equation solution
+//! @param [in] coefs   Содержит 3 коэффициента квадратного уравнения
+//! @param [out] sol   Содержит корни квадратного уравнения и количество корней
 //!
 //! @return void
 //!

@@ -9,16 +9,16 @@
 #include "../terminal/terminal.h"
 
 //!
-//! @brief scans double number
+//! @brief Принимает на ввод число типа double
 //!
-//! @param [out] double* num     the number that need to be read
+//! @param [out] num     Переменная типа double, в которую записывается введенное значение
 //!
-//! @return int   0
+//! @return 0
 //!
 static int get_double(double* num);
 
 //!
-//! @brief clears buffer from user's input
+//! @brief Очищает буффер от ввода пользователя
 //!
 //! @param void
 //!
@@ -27,11 +27,11 @@ static int get_double(double* num);
 static void clearBuff();
 
 //!
-//! @brief checks whether the string is made of space signs
+//! @brief Проверяет строку на пробельные символы
 //!
 //! @param void
 //!
-//! @return void
+//! @return 1, если строка полностью состоит из пробельных символов, иначе 0
 //!
 static bool strIsSpace();
 
@@ -84,8 +84,13 @@ static void clearBuff(){
 static int get_double(double* num){
     assert(num != NULL);
 
+    int scanf_output = 0;
+
     while (true){
-        while (scanf("%lg", num) != 1){
+        while ((scanf_output = scanf("%lg", num)) != 1){
+            if (scanf_output == EOF){
+                return 1;
+            }
             printf("This is not a number! Try 2.2 or 6\n");
             clearBuff();
         }
@@ -101,23 +106,22 @@ static int get_double(double* num){
 int get_coefs(struct QuadraticEquationCoef* coefs){
     assert(coefs != NULL);
 
-    printf("Enter a:\n");
-    get_double(&coefs->coef_a);
-    printf("Enter b:\n");
-    get_double(&coefs->coef_b);
-    printf("Enter c:\n");
-    get_double(&coefs->coef_c);
-    return 0;
-}
+    int get_double_output = 0;
 
-void printColor(const int col){
-    if (col == BLANK){
-        printf("\033[0m");
+    printf("Enter a:\n");
+    get_double_output = get_double(&coefs->coef_a);
+    if (get_double_output == 1){
+        return 1;
     }
-    if (col == RED){
-        printf("\033[31m");
+    printf("Enter b:\n");
+    get_double_output = get_double(&coefs->coef_b);
+    if (get_double_output == 1){
+        return 1;
     }
-    if (col == GREEN){
-        printf("\033[32m");
+    printf("Enter c:\n");
+    get_double_output = get_double(&coefs->coef_c);
+    if (get_double_output == 1){
+        return 1;
     }
+    return 0;
 }

@@ -3,39 +3,55 @@
 #include "QES.h"
 
 //!
-//! @brief main function
+//! @brief Основная функция, которая работает исходя из пользовательского ввода
 //!
-//! @param [in] int argc    amount of terminal input
-//! @param [in] char** argv     terminal input
+//! @param [in] check_res   Флаг, полученный из ввода пользователя
+//! @param [in] argc    Количество аргументов терминала
+//! @param [in] argv     Массив аргументов терминала
+//!
+//! @return void
+//!
+void runProgramm(int check_res, int argc, char* argv[], char* file_name);
+
+//!
+//! @brief Функция main
+//!
+//! @param [in] int argc    Количество аргументов терминала
+//! @param [in] char** argv     Массив аргументов терминала
 //!
 //! @return int     0
 //!
 int main(int argc, char* argv[]){
-    Flag fl = {.flag = 1, .flag_cnt = 0};
-    Color col= {.color = DEFAULT, .color_cnt = 0};
-    int check_res = checkArgs(argc, argv, &fl, &col);
-    set_color_flag(col.color);
+    int flag = NOTHING;
+    int col = DEFAULT;
+    char file_name[100] = "./tests/tests";
+    int check_res = checkArgs(argc, argv, &flag, &col, file_name);
+    set_color_flag(col);
 
-    runProgramm(check_res, argc, argv);
+    runProgramm(check_res, argc, argv, file_name);
     return 0;
 }
 
-void runProgramm(int check_res, int argc, char* argv[]){
+void runProgramm(int check_res, int argc, char* argv[], char* file_name){
     switch(check_res){
         case HELP:{
             printf("For manual scanning: ./a.out -m 0\n");
             printf("For Unit Testing: ./a.out -m 1\n");
-            printf("To change color: ./a.out -c 0 (for blank)\v");
-            printf("\b\b\b\b\b\b\b\b\b\b\b\b\b");
-            printf("1 (for red)\v");
-            printf("\b\b\b\b\b\b\b\b\b\b\b");
-            printf("2 (for green)\n\r");
+            printf("To read tests from file (DEFAULT: ./tests/tests): ./a.out -m 1 -f FILE_NAME\n");
+            printf("To disable color: ./a.out -c 0\n");
+            printf("To set default color: ./a.out -c 1\n");
             break;
         }
         case MANUAL_SCAN:{
             printf("Quadratic Equation solver\n\n");
             struct QuadraticEquationCoef coefs;
-            get_coefs(&coefs);
+            int get_coefs_output = 0;
+            get_coefs_output = get_coefs(&coefs);
+
+            if (get_coefs_output == 1){
+                printf("Input Error detected\n");
+                break;
+            }
 
             struct QuadraticEquationSol equation;
             QuadraticEquationSolver(&coefs, &equation);
@@ -44,9 +60,13 @@ void runProgramm(int check_res, int argc, char* argv[]){
         }
         case UNIT_TESTING:{
             int test_amount = 0;
-            Test* Tests = freadTests(&test_amount);
+            bool is_calloc = true;
+            Test* Tests = freadTests(&test_amount, file_name, &is_calloc);
+            //Testspr(Tests, 11);
             runAllTests(Tests, test_amount);
-            free(Tests);
+            if (is_calloc){
+                free(Tests);
+            }
             break;
         }
         case TERMINAL_ERROR:{

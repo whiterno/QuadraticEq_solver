@@ -1,20 +1,32 @@
 #ifndef _CPRINT
 #define _CPRINT
 
+enum Color_flag{
+    DEFAULT,        ///< Показывает, что используется стандартный цвет
+    DEFAULT_IN,     ///< Показывает, что используется стандартный цвет после ввода флага -c 1
+    DISABLE_COLOR   ///< Показывает, что цвет отключен
+};
+
+enum Colors{
+    COLOR_ERROR = -1,   ///< Показывает, что появилась ошибка во время ввода цвета
+    BLANK,              ///< Показывает, что вывод без цвета
+    RED,                ///< Показывает, что вывод красного цвета
+    GREEN               ///< Показывает, что вывод зеленого цвета
+};
 //!
-//! @brief colorful printf
+//! @brief Цветной вывод
 //!
-//! @param [in] const int col   printed color
-//! @param [out] const char* fmt    output string
+//! @param [in] col   Цвет вывода
+//! @param [out] fmt     Строка вывода
 //!
 //! @return void
 //!
 void cprint(const int col, const char* fmt, ...);
 
 //!
-//! @brief enables or disables cprint
+//! @brief Включает или отключает cprint()
 //!
-//! @param [in]const int col    ability flag
+//! @param [in] col     Флаг показывает, включен или выключен цветной вывод
 //!
 //! @return void
 //!

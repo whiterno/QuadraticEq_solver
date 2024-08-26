@@ -1,46 +1,32 @@
 #ifndef _TERMINAL
 #define _TERMINAL
 
-struct Flag{
-    int flag, flag_cnt;
-};
-
-struct Color{
-    int color, color_cnt;
-};
-
 enum Terminal_input_results{
-    HELP,
-    MANUAL_SCAN,
-    UNIT_TESTING,
-    TERMINAL_ERROR
-};
-
-enum Colors{
-    COLOR_ERROR = -2,
-    DEFAULT,
-    BLANK,
-    RED,
-    GREEN
+    NOTHING,        ///< Показывает, что в терминал ничего не вводили
+    HELP,           ///< Показывает, что введен флаг --help
+    MANUAL_SCAN,    ///< Показывает, что введен флаг -m 0
+    UNIT_TESTING,   ///< Показывает, что введен флаг -m 1
+    TERMINAL_ERROR  ///< Показывает, что был введен неизвестный флаг
 };
 
 //!
-//! @brief reads and checks terminal input
+//! @brief Считывает пользовательский ввод
 //!
-//! @param [in] const int argc   amount of terminal input
-//! @param [in] char* argv[]     terminal input
-//! @param [out] Flag* fl   flag from terminal input
-//! @param [out] Color* col     color flag from terminal input
+//! @param [in] argc   Количество введенных аргуметов
+//! @param [in] argv[]     Массив введенных аргументов
+//! @param [out] flag   Флаг, полученный из пользовательского ввода
+//! @param [out] col     Флаг цвета, полученный из пользовательского ввода
+//! @param [out] file_name     Имя файла для считывание тестов, полученное из пользовательского ввода
 //!
-//! @return int     terminal input check result
+//! @return Флаг вывода (Unit testing, Manual scan или Help), полученный из пользовательского ввода
 //!
-int checkArgs(const int argc, char* argv[], Flag* fl, Color* col);
+int checkArgs(const int argc, char* argv[], int* flag, int* col, char* file_name);
 
 //!
-//! @brief prints terminal input
+//! @brief Выводит пользовательский ввод
 //!
-//! @param [in] const int argc  amount of terminal input
-//! @param [in] char* argv[]    terminal input
+//! @param [in] argc  Количество введенных аргуметов
+//! @param [in] argv[]    Массив введенных аргументов
 //!
 //! @return void
 //!

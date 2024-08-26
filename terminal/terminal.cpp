@@ -4,60 +4,73 @@
 #include <string.h>
 #include "terminal.h"
 #include "../consts.h"
+#include "../cprint/cprint.h"
 
 //!
-//! @brief gets color flag from terminal input
+//! @brief Считывает второй аргумент после флага -m
 //!
-//! @param [in] char* arg   string color from terminal
+//! @param [in] str     Второй аргумент в виде строки
 //!
-//! @return int     color in int
+//! @return 0, если введено 0, 1, если введено 1
 //!
-static int get_color(char* arg);
+static int get_m(char* str);
 
 //!
-//! @brief gets the second argument of -m flag
+//! @brief Считывает второй аргумент после флага -с
 //!
-//! @param [in] char* arg   string second argument
+//! @param [in] str     Второй аргумент в виде строки
 //!
-//! @return int     second argument in int
+//! @return 0, если введено 0, 1, если введено 1
 //!
-static int get_m(char* arg);
+static int get_col_flag(char* str);
 
-int checkArgs(const int argc, char* argv[], Flag* fl, Color* col){
+
+int checkArgs(const int argc, char* argv[], int* flag, int* col, char* file_name){
     if (argc == 1){
         return MANUAL_SCAN;
     }
 
-    for (int arg = 1; arg < argc; arg++){
-        if (strcmp(argv[arg], "-c") == 0){
-            if (arg + 1 == argc) {
+    for (int i = 1; i < argc; i++){
+        if (strcmp(argv[i], "--help") == 0){
+            if (*flag == NOTHING){
+                *flag = HELP;
+                continue;
+            }
+            else return TERMINAL_ERROR;
+        }
+        if (strcmp(argv[i], "-m") == 0){
+            if (*flag == NOTHING){
+                if (i + 1 == argc){
+                    return TERMINAL_ERROR;
+                }
+                *flag = get_m(argv[i + 1]);
+                i++;
+                continue;
+            }
+            else return TERMINAL_ERROR;
+            }
+        if (strcmp(argv[i], "-c") == 0){
+            if (*col == DEFAULT){
+                if (i + 1 == argc){
+                    return TERMINAL_ERROR;
+                }
+                *col = get_col_flag(argv[i + 1]);
+                i++;
+                continue;
+            }
+            else return TERMINAL_ERROR;
+        }
+        if (strcmp(argv[i], "-f") == 0 && *flag == UNIT_TESTING){
+            if (i + 1 == argc){
                 return TERMINAL_ERROR;
             }
-            col->color = get_color(argv[arg + 1]);
-            arg++;
-            col->color_cnt++;
-            continue;
-        }
-        if (strcmp(argv[arg], "--help") == 0){
-            fl->flag = HELP;
-            fl->flag_cnt++;
-            continue;
-        }
-        if (strcmp(argv[arg], "-m") == 0){
-            if (arg + 1 == argc) {
-                return TERMINAL_ERROR;
-            }
-            fl->flag = get_m(argv[arg + 1]);
-            arg++;
-            fl->flag_cnt++;
+            strcpy(file_name, argv[i + 1]);
+            i++;
             continue;
         }
         return TERMINAL_ERROR;
     }
-    if (fl->flag_cnt > 1 || col->color == COLOR_ERROR || fl->flag == TERMINAL_ERROR || col->color_cnt > 1){
-        return TERMINAL_ERROR;
-    }
-    return fl->flag;
+    return *flag;
 }
 
 void printArgs(const int argc, char* argv[]){
@@ -67,22 +80,22 @@ void printArgs(const int argc, char* argv[]){
     printf("\n");
 }
 
-static int get_color(char* arg){
-    if (strcmp(arg, "0") == 0){
-        return BLANK;
+int get_m(char* str){
+    if (strcmp(str, "0") == 0){
+            return MANUAL_SCAN;
     }
-    if (strcmp(arg, "1") == 0){
-        return DEFAULT;
+    if (strcmp(str, "1") == 0){
+            return UNIT_TESTING;
     }
-    return COLOR_ERROR;
+    return TERMINAL_ERROR;
 }
 
-static int get_m(char* arg){
-    if (strcmp(arg, "0") == 0){
-        return MANUAL_SCAN;
+int get_col_flag(char* str){
+    if (strcmp(str, "0") == 0){
+            return DISABLE_COLOR;
     }
-    if (strcmp(arg, "1") == 0){
-        return UNIT_TESTING;
+    if (strcmp(str, "1") == 0){
+            return DEFAULT_IN;
     }
     return TERMINAL_ERROR;
 }

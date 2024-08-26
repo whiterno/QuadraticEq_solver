@@ -9,46 +9,160 @@
 #include "../in_out/in_out.h"
 #include "../cprint/cprint.h"
 
+//! Размер массива тестов, встроенного в программу
+static const int SIZE_IN_BUILT = 12;
+
+//! Массив тестов, встроенный в программу
+struct Test TESTS_IN_BUILT[]= {
+
+        {.serial_num = 0,
+        .coefs = {.coef_a = 0,
+                   .coef_b = 0,
+                   .coef_c = 0},
+         .sol = {.QES_root_count = ES_INF_ROOTS,
+                 .root1 = 0,
+                 .root2 = 0}},
+
+        {.serial_num = 1,
+        .coefs = {.coef_a = 0,
+                   .coef_b = 0,
+                   .coef_c = 1},
+         .sol = {.QES_root_count = 0,
+                 .root1 = 0,
+                 .root2 = 0}},
+
+        {.serial_num = 2,
+        .coefs = {.coef_a = 0,
+                   .coef_b = 1,
+                   .coef_c = 0},
+         .sol = {.QES_root_count = 1,
+                 .root1 = 0,
+                 .root2 = 0}},
+
+        {.serial_num = 3,
+        .coefs = {.coef_a = 0,
+                   .coef_b = 1,
+                   .coef_c = 1},
+         .sol = {.QES_root_count = 1,
+                 .root1 = -1,
+                 .root2 = -1}},
+
+        {.serial_num = 4,
+        .coefs = {.coef_a = 0,
+                   .coef_b = 0,
+                   .coef_c = 1.2},
+         .sol = {.QES_root_count = 0,
+                 .root1 = 0,
+                 .root2 = 0}},
+
+        {.serial_num = 5,
+        .coefs = {.coef_a = 0,
+                   .coef_b = 1.2,
+                   .coef_c = 0},
+         .sol = {.QES_root_count = 1,
+                 .root1 = 0,
+                 .root2 = 0}},
+
+        {.serial_num = 6,
+        .coefs = {.coef_a = 0,
+                   .coef_b = 1.2,
+                   .coef_c = 4.8},
+         .sol = {.QES_root_count = 1,
+                 .root1 = -4,
+                 .root2 = -4}},
+
+        {.serial_num = 7,
+        .coefs = {.coef_a = 4,
+                   .coef_b = -4,
+                   .coef_c = 1},
+         .sol = {.QES_root_count = 1,
+                 .root1 = 0.5,
+                 .root2 = 0.5}},
+
+        {.serial_num = 8,
+        .coefs = {.coef_a = 1,
+                   .coef_b = -2,
+                   .coef_c = -15},
+         .sol = {.QES_root_count = 2,
+                 .root1 = -3,
+                 .root2 = 5}},
+
+        {.serial_num = 9,
+        .coefs = {.coef_a = 1,
+                   .coef_b = 2,
+                   .coef_c = 10},
+         .sol = {.QES_root_count = 0,
+                 .root1 = 0,
+                 .root2 = 0}},
+
+        {.serial_num = 10,
+        .coefs = {.coef_a = 1,
+                   .coef_b = 7,
+                   .coef_c = 10},
+         .sol = {.QES_root_count = 2,
+                 .root1 = -2,
+                 .root2 = -5}},
+
+        {.serial_num = 11,
+        .coefs = {.coef_a = 1,
+                   .coef_b = 7,
+                   .coef_c = 10},
+         .sol = {.QES_root_count = 2,
+                 .root1 = -5,
+                 .root2 = -2}}
+
+    };
+
 //!
-//! @brief runs one test
+//! @brief Проверяет один тест
 //!
-//! @param [in] Test test   test itself
-//! @param [in] const int TEST_AMOUNT   amount of tests in the source array
+//! @param [in] test   Тест
+//! @param [in] TEST_AMOUNT   Количество тестов в массиве тестов
 //!
-//! @return int     the result of test check
+//! @return Результат проверки теста
 //!
 static int runTest(const Test test, const int TEST_AMOUNT);
 
 //!
-//! @brief  compares QuadraticEquationSolver() output with answer
+//! @brief  Сравнивает вывод QuadraticEquationSolver() с ответом
 //!
-//! @param [in] const Test test     test with answer
-//! @param [in] const struct QuadraticEquationSol* roots    roots got by QuadraticEquationSolver()
+//! @param [in] test     Тест с ответом
+//! @param [in] roots    Корни, полученные с QuadraticEquationSolver()
 //!
-//! @return int     SOLUTION_SUCCESS or SOLUTION_ERROR
+//! @return Сошелся ли решение функции с ответом или нет: SOLUTION_SUCCESS или SOLUTION_ERROR
 //!
 static int checkTest(const Test test, const struct QuadraticEquationSol* roots);
 
 //!
-//! @brief prints test result (success or error)
+//! @brief Выводит результаты проверки теста (success или error)
 //!
-//! @param [in] const int result    the ruselt of test check
-//! @param [in] const Test test     test with test answers
-//! @param [in] const struct QuadraticEquationSol* roots    roots got by QuadraticEquationSolver()
+//! @param [in] result    Результата проверки теста
+//! @param [in] test     Тест с ответами
+//! @param [in] roots    Корни, полученные с QuadraticEquationSolver()
 //!
 //! @return void
 //!
 static void printTestResult(const int result, const Test test, const struct QuadraticEquationSol* roots);
 
 //!
-//! @brief  prints message if error found
+//! @brief  Выводит сообщение, если найдена ошибка
 //!
-//! @param [in] const Test test     test with answer and coefs
-//! @param [in] const struct QuadraticEquationSol* roots    roots got by QuadraticEquationSolver()
+//! @param [in] test     Тест с ответом и коэффициентами
+//! @param [in] roots    Корни, полученные с QuadraticEquationSolver()
 //!
 //! @return void
 //!
 static void printSolutionError(const Test test, const struct QuadraticEquationSol* roots);
+
+//!
+//! @brief Выводит массив тестов (debug функция)
+//!
+//! @param [in] source     Массив тестов
+//! @param [in] size     Количество тестов в массиве
+//!
+//! @return void
+//!
+static void Testspr(Test* source, int size);
 
 static int runTest(const Test test, const int TEST_AMOUNT){
     assert((test.serial_num >= 0) && (test.serial_num < TEST_AMOUNT));
@@ -94,9 +208,9 @@ static void printTestResult(const int result, const Test test, const struct Quad
     };
 }
 
-void runAllTests(Test TESTS[], const int test_amount){
+void runAllTests(Test Tests[], const int test_amount){
     for(int test_count = 0; test_count < test_amount; test_count++){
-        runTest(TESTS[test_count], test_amount);
+        runTest(Tests[test_count], test_amount);
     }
 }
 
@@ -110,11 +224,20 @@ static void printSolutionError(const Test test, const struct QuadraticEquationSo
     test.sol.QES_root_count, test.sol.root1, test.sol.root2);
 }
 
-Test* freadTests(int* test_amount){
-    FILE * fp = fopen("./tests/tests", "r");
-    assert(fp != NULL);
+Test* freadTests(int* test_amount, char* file_name, bool* is_calloc){
+    FILE * fp = fopen(file_name, "r");
+    if (fp == NULL){
+        printf("Can't read file, use in-built tests\n");
+        *is_calloc = false;
+        *test_amount = SIZE_IN_BUILT;
+        return TESTS_IN_BUILT;
+    }
 
-    fscanf(fp, "%d", test_amount);
+    if (fscanf(fp, "%d", test_amount) != 1){
+        *is_calloc = false;
+        printf("Wrong input file format\n");
+        return NULL;
+    }
 
     Test* pntTest = (Test*)calloc(*test_amount, sizeof(Test));
 
@@ -131,7 +254,7 @@ Test* freadTests(int* test_amount){
     return pntTest;
 }
 
-void Testspr(Test* source, int size){
+static void Testspr(Test* source, int size){
     for(int test = 0; test < size; test++){
         printf("%d ", source[test].serial_num);
         printf("%lg ", source[test].coefs.coef_a);
