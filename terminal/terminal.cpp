@@ -30,42 +30,42 @@ int checkArgs(const int argc, char* argv[], int* flag, int* col, char* file_name
         return MANUAL_SCAN;
     }
 
-    for (int i = 1; i < argc; i++){
-        if (strcmp(argv[i], "--help") == 0){
+    for (int arg = 1; arg < argc; arg++){
+        if (strcmp(argv[arg], "--help") == 0){
             if (*flag == NOTHING){
                 *flag = HELP;
                 continue;
             }
             else return TERMINAL_ERROR;
         }
-        if (strcmp(argv[i], "-m") == 0){
+        if (strcmp(argv[arg], "-m") == 0){
             if (*flag == NOTHING){
-                if (i + 1 == argc){
+                if (arg + 1 == argc){
                     return TERMINAL_ERROR;
                 }
-                *flag = get_m(argv[i + 1]);
-                i++;
+                *flag = get_m(argv[arg + 1]);
+                arg++;
                 continue;
             }
             else return TERMINAL_ERROR;
             }
-        if (strcmp(argv[i], "-c") == 0){
+        if (strcmp(argv[arg], "-c") == 0){
             if (*col == DEFAULT){
-                if (i + 1 == argc){
+                if (arg + 1 == argc){
                     return TERMINAL_ERROR;
                 }
-                *col = get_col_flag(argv[i + 1]);
-                i++;
+                *col = get_col_flag(argv[arg + 1]);
+                arg++;
                 continue;
             }
             else return TERMINAL_ERROR;
         }
-        if (strcmp(argv[i], "-f") == 0 && *flag == UNIT_TESTING){
-            if (i + 1 == argc){
+        if (strcmp(argv[arg], "-f") == 0 && *flag == UNIT_TESTING){
+            if (arg + 1 == argc){
                 return TERMINAL_ERROR;
             }
-            strcpy(file_name, argv[i + 1]);
-            i++;
+            strcpy(file_name, argv[arg + 1]);
+            arg++;
             continue;
         }
         return TERMINAL_ERROR;
