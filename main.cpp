@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include "QES.h"
 
+//! @brief Максимальная длина имени файла
+const int MAX_FILE_NAME_SIZE = 100;
+
 //!
 //! @brief Основная функция, которая работает исходя из пользовательского ввода
 //!
@@ -24,7 +27,7 @@ void runProgramm(int check_res, int argc, char* argv[], char* file_name);
 int main(int argc, char* argv[]){
     int flag = NOTHING;
     int col = DEFAULT;
-    char file_name[100] = "./tests/tests";
+    char file_name[MAX_FILE_NAME_SIZE] = "./tests/tests";
     int check_res = checkArgs(argc, argv, &flag, &col, file_name);
     set_color_flag(col);
 
