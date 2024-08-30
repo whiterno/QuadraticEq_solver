@@ -38,7 +38,7 @@ int main(int argc, char* argv[]){
 void runProgramm(int check_res, int argc, char* argv[], char* file_name){
     switch(check_res){
         case HELP:{
-            printf("For manual scanning: ./a.out -m 0\n");
+            printf(" For manual scanning: ./a.out -m 0\n");
             printf("For Unit Testing: ./a.out -m 1\n");
             printf("To read tests from file (DEFAULT: ./tests/tests): ./a.out -m 1 -f FILE_NAME\n");
             printf("To disable color: ./a.out -c 0\n");
